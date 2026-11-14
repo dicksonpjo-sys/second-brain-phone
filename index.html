@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="Private phone companion for your encrypted Second Brain vault.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>Second Brain</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://apis.google.com/js/api.js" async defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="robot" aria-hidden="true">🤖</span><div><h1>Second Brain</h1><p>Your private pocket brain</p></div></div>
+      <span id="onlineStatus" class="status-pill">Offline ready</span>
+    </header>
+
+    <section class="card setup-card">
+      <details id="setupDetails">
+        <summary>Google Drive setup</summary>
+        <p class="muted">These public app identifiers let this phone page open Google Picker. They do not grant access on their own. Only the encrypted vault file you select is shared with the app.</p>
+        <label>Google web client ID<input id="clientId" autocomplete="off" placeholder="...apps.googleusercontent.com"></label>
+        <label>Google API key<input id="apiKey" autocomplete="off" placeholder="AIza..."></label>
+        <label>Google Cloud project number<input id="projectNumber" inputmode="numeric" autocomplete="off" placeholder="Numbers only"></label>
+        <button id="saveSettings" class="secondary">Save setup on this phone</button>
+        <p class="hint">The companion must be hosted on HTTPS. Setup steps are in <code>SETUP.md</code>.</p>
+      </details>
+    </section>
+
+    <section id="unlockCard" class="card">
+      <h2>Unlock your brain</h2>
+      <p class="muted">Use the same private passphrase on your PC and phone. It is never sent to Google or saved by the app.</p>
+      <label>Passphrase<input id="passphrase" type="password" autocomplete="current-password" minlength="12" placeholder="At least 12 characters"></label>
+      <div class="button-row">
+        <button id="unlockButton" class="primary">Unlock saved brain</button>
+        <button id="createButton" class="secondary">Start a new offline brain</button>
+      </div>
+      <p id="unlockMessage" class="hint"></p>
+    </section>
+
+    <section id="brainArea" hidden>
+      <section class="card drive-card">
+        <div class="section-head"><div><h2>Drive sync</h2><p id="driveFileLabel" class="muted">Choose the encrypted file created by the PC app.</p></div><span id="syncStatus" class="status-pill">Not connected</span></div>
+        <div class="button-row">
+          <button id="chooseDriveFile" class="secondary">Choose vault in Drive</button>
+          <button id="syncButton" class="primary">Sync now</button>
+          <button id="disconnectDrive" class="quiet">Disconnect</button>
+        </div>
+        <p class="hint">Drive stores an encrypted file. Your notes are decrypted only in this browser after you unlock.</p>
+      </section>
+
+      <section class="card">
+        <h2>Quick capture</h2>
+        <label>Your thought<textarea id="captureText" rows="4" placeholder="Capture a thought, idea, or something to remember…"></textarea></label>
+        <button id="saveCapture" class="primary">Save on this phone</button>
+      </section>
+
+      <section class="card">
+        <h2>Reminders</h2>
+        <label>Reminder<input id="reminderTitle" placeholder="What should I remember?"></label>
+        <label>When<input id="reminderWhen" type="datetime-local"></label>
+        <button id="addReminder" class="secondary">Add reminder</button>
+        <div id="reminderList" class="item-list"></div>
+      </section>
+
+      <section class="card">
+        <h2>Approved memory</h2>
+        <p class="muted">Read-only on the phone. Review or change these notes on your PC.</p>
+        <div id="memoryList" class="item-list"></div>
+      </section>
+
+      <div class="bottom-actions"><button id="lockButton" class="quiet">Lock this brain</button><span id="localStatus" class="muted">Saved encrypted on this phone</span></div>
+    </section>
+
+    <footer><p>Local-first · Encrypted sync · No AI API bill</p><p id="appMessage" role="status" aria-live="polite"></p></footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
